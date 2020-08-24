@@ -1,6 +1,6 @@
 [package]
 name = "ndspy-sys"
-version = "0.1.3"
+version = "0.1.4"
 authors = ["Moritz Moeller <virtualritz@protonmail.com>"]
 license = "BSD-3-Clause"
 license-file = "LICENSE.md"
@@ -14,4 +14,4 @@ repository = "https://github.com/virtualritz/ndspy-sys"
 documentation = "https://docs.rs/ndspy-sys/"
 
 [build-dependencies]
-bindgen = "0.54.1"
+bindgen = "0.55.0"
