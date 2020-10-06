@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <uparam.h>
-#include "dlInterface.h"
 
 
 #define PkDspyMaxMsgSize 32760
@@ -265,7 +264,7 @@ DspyImageData(PtDspyImageHandle image,
 		int ymax,
 		int entrysize,
 		const unsigned char *data);
- 
+
 _3DL_EXTERN_C _3DL_ALWAYS_EXPORT PtDspyError
 DspyImageClose(PtDspyImageHandle);
 
@@ -482,8 +481,3 @@ DspyRegisterDriverTable(
 	const PtDspyDriverFunctionTable *pTable );
 
 #endif /* ifdef ndspy_h */
-
-
-
-
-
