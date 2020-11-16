@@ -1,9 +1,8 @@
 [package]
 name = "ndspy-sys"
-version = "0.1.5"
+version = "0.1.6"
 authors = ["Moritz Moeller <virtualritz@protonmail.com>"]
-license = "BSD-3-Clause"
-license-file = "LICENSE.md"
+license = "MIT OR Apache-2.0 OR Zlib"
 keywords = ["graphics", "rendering", "3d", "ray-tracing"]
 categories = ["graphics", "multimedia::images", "rendering::graphics-api"]
 description = "Auto-generated Rust bindings for the RenderMan/3Delight|NSI display driver API."

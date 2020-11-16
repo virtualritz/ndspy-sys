@@ -6,6 +6,25 @@
 #include <stdlib.h>
 #include <uparam.h>
 
+#ifdef _WIN32
+#	define ALWAYS_IMPORT __declspec(dllimport)
+#	define ALWAYS_EXPORT __declspec(dllexport)
+#else
+#	define ALWAYS_IMPORT
+#	if __GNUC__ >= 4
+#		define ALWAYS_EXPORT __attribute__ ((visibility("default")))
+#	else
+#		define ALWAYS_EXPORT
+#	endif
+#endif
+
+#define INTERFACE ALWAYS_IMPORT
+
+#ifdef  __cplusplus
+#   define EXTERN_C extern "C"
+#else
+#   define EXTERN_C
+#endif
 
 #define PkDspyMaxMsgSize 32760
 
@@ -244,7 +263,7 @@ typedef void * PtDspyImageHandle;
 typedef void * PtDspyChannel;
 typedef void * PtDspyOutput;
 
-_3DL_EXTERN_C _3DL_ALWAYS_EXPORT PtDspyError
+EXTERN_C ALWAYS_EXPORT PtDspyError
 DspyImageOpen(PtDspyImageHandle * image,
 		const char *drivername,
 		const char *filename,
@@ -256,7 +275,7 @@ DspyImageOpen(PtDspyImageHandle * image,
 		PtDspyDevFormat *format,
 		PtFlagStuff *flagstuff);
 
-_3DL_EXTERN_C _3DL_ALWAYS_EXPORT PtDspyError
+EXTERN_C ALWAYS_EXPORT PtDspyError
 DspyImageData(PtDspyImageHandle image,
 		int xmin,
 		int xmax,
@@ -265,10 +284,10 @@ DspyImageData(PtDspyImageHandle image,
 		int entrysize,
 		const unsigned char *data);
 
-_3DL_EXTERN_C _3DL_ALWAYS_EXPORT PtDspyError
+EXTERN_C ALWAYS_EXPORT PtDspyError
 DspyImageClose(PtDspyImageHandle);
 
-_3DL_EXTERN_C _3DL_ALWAYS_EXPORT  PtDspyError
+EXTERN_C ALWAYS_EXPORT  PtDspyError
 DspyImageReopen(PtDspyImageHandle image,
 		const char *drivername,
 		const char *filename,
@@ -280,10 +299,10 @@ DspyImageReopen(PtDspyImageHandle image,
 		PtDspyDevFormat *format,
 		PtFlagStuff *flagstuff);
 
-_3DL_EXTERN_C _3DL_ALWAYS_EXPORT PtDspyError
+EXTERN_C ALWAYS_EXPORT PtDspyError
 DspyImageDelayClose(PtDspyImageHandle);
 
-_3DL_EXTERN_C _3DL_ALWAYS_EXPORT PtDspyError
+EXTERN_C ALWAYS_EXPORT PtDspyError
 DspyImageQuery(PtDspyImageHandle,
 	   PtDspyQueryType,
 	   int,
@@ -392,39 +411,39 @@ typedef struct
 
 /* Utilities, for PrMan compatibility. */
 
-_3DL_EXTERN_C DL_INTERFACE void
+EXTERN_C INTERFACE void
 DspyMemReverseCopy(
 	unsigned char *t,
 	const unsigned char *s,
 	int len );
 
-_3DL_EXTERN_C DL_INTERFACE void
+EXTERN_C INTERFACE void
 DspyMemReverse(
 	unsigned char *t,
 	int len );
 
-_3DL_EXTERN_C DL_INTERFACE PtDspyError
+EXTERN_C INTERFACE PtDspyError
 DspyFindStringInParamList(
 	const char *name,
 	char **result,
 	int paramCount,
 	const UserParameter *parameters );
 
-_3DL_EXTERN_C DL_INTERFACE PtDspyError
+EXTERN_C INTERFACE PtDspyError
 DspyFindMatrixInParamList(
 	const char *name,
 	float *result,
 	int paramCount,
 	const UserParameter *parameters );
 
-_3DL_EXTERN_C DL_INTERFACE PtDspyError
+EXTERN_C INTERFACE PtDspyError
 DspyFindFloatInParamList(
 	const char *name,
 	float *result,
 	int paramCount,
 	const UserParameter *parameters );
 
-_3DL_EXTERN_C DL_INTERFACE PtDspyError
+EXTERN_C INTERFACE PtDspyError
 DspyFindFloatsInParamList(
 	const char *name,
 	int *resultCount,
@@ -432,14 +451,14 @@ DspyFindFloatsInParamList(
 	int paramCount,
 	const UserParameter *parameters );
 
-_3DL_EXTERN_C DL_INTERFACE PtDspyError
+EXTERN_C INTERFACE PtDspyError
 DspyFindIntInParamList(
 	const char *name,
 	int *result,
 	int paramCount,
 	const UserParameter *parameters );
 
-_3DL_EXTERN_C DL_INTERFACE PtDspyError
+EXTERN_C INTERFACE PtDspyError
 DspyFindIntsInParamList(
 	const char *name,
 	int *resultCount,
@@ -447,21 +466,21 @@ DspyFindIntsInParamList(
 	int paramCount,
 	const UserParameter *parameters );
 
-_3DL_EXTERN_C DL_INTERFACE PtDspyError
+EXTERN_C INTERFACE PtDspyError
 DspyReorderFormatting(
 	int formatCount,
 	PtDspyDevFormat *format,
 	int outFormatCount,
 	const PtDspyDevFormat *outFormat );
 
-_3DL_EXTERN_C DL_INTERFACE void
+EXTERN_C INTERFACE void
 DspyError(
 	const char *module,
 	const char *fmt,
 	... );
 
 /* Deprecated. Use DspyRegisterDriverTable instead. */
-_3DL_EXTERN_C DL_INTERFACE PtDspyError
+EXTERN_C INTERFACE PtDspyError
 DspyRegisterDriver(
 	const char *driver_name,
 	const PtDspyOpenFuncPtr pOpen,
@@ -475,7 +494,7 @@ DspyRegisterDriver(
 	NOTES
 	- If pTable is null, the driver is unregistered.
 */
-_3DL_EXTERN_C DL_INTERFACE PtDspyError
+EXTERN_C INTERFACE PtDspyError
 DspyRegisterDriverTable(
 	const char *driver_name,
 	const PtDspyDriverFunctionTable *pTable );
