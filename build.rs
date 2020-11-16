@@ -26,6 +26,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Build bindings
     let bindings = bindgen::Builder::default()
         .header("include/wrapper.h")
+        .whitelist_function("Dspy.*")
+        //.whitelist_type("PkDspy.*")
+        .whitelist_type("PtDspy.*")
+        .whitelist_type("UserParameter")
+        .whitelist_var("PkDspy.*")
         // Searchpath
         .clang_arg(format!("-I{}", include_path.display()))
         // Tell cargo to invalidate the built crate whenever any of the

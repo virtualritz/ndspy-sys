@@ -1,6 +1,6 @@
 [package]
 name = "ndspy-sys"
-version = "0.1.6"
+version = "0.1.7"
 authors = ["Moritz Moeller <virtualritz@protonmail.com>"]
 license = "MIT OR Apache-2.0 OR Zlib"
 keywords = ["graphics", "rendering", "3d", "ray-tracing"]
