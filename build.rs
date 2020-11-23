@@ -9,8 +9,8 @@ use std::{
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // TODO: make this generic & work on Linux/Windows
-
     println!("cargo:rerun-if-env-changed=DELIGHT");
+    println!("cargo:rerun-if-changed=include/wrapper.h");
 
     let include_path = match &env::var("DELIGHT") {
         Err(_) => PathBuf::from(&env::var("CARGO_MANIFEST_DIR").unwrap()).join("include"),
@@ -21,6 +21,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     };
 
+    if cfg!(feature = "link_lib3delight") {
+        let delight = &env::var("DELIGHT").expect(
+            "Linking against 3Delight requires a 3Delight installation and the\n\
+        DELIGHT environment variable pointing to it.",
+        );
+        // Emit linker searchpath
+        println!(
+            "cargo:rustc-link-search={}",
+            Path::new(delight).join("lib").display()
+        );
+        // Link to lib3delight
+        println!("cargo:rustc-link-lib=dylib=3delight");
+    }
+
     eprintln!("include: {}", include_path.display());
 
     // Build bindings
@@ -29,8 +43,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .whitelist_function("Dspy.*")
         //.whitelist_type("PkDspy.*")
         .whitelist_type("PtDspy.*")
+        .whitelist_type("PtDriver.*")
         .whitelist_type("UserParameter")
         .whitelist_var("PkDspy.*")
+        //.rustified_enum(".*")
         // Searchpath
         .clang_arg(format!("-I{}", include_path.display()))
         // Tell cargo to invalidate the built crate whenever any of the
