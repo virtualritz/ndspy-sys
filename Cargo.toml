@@ -18,4 +18,4 @@ default = []
 link_lib3delight = []
 
 [build-dependencies]
-bindgen = "0.59.1"
+bindgen = "0.61.0"
