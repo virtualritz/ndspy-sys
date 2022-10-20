@@ -12,14 +12,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("cargo:rerun-if-env-changed=DELIGHT");
     println!("cargo:rerun-if-changed=include/wrapper.h");
 
-    let include_path = match &env::var("DELIGHT") {
-        Err(_) => PathBuf::from(&env::var("CARGO_MANIFEST_DIR").unwrap()).join("include"),
-        Ok(path) => {
-            eprintln!("Building against locally installed 3Delight @ {}", &path);
-            let delight = Path::new(&path);
-            delight.join("include")
-        }
-    };
+    let include_path = PathBuf::from(&env::var("CARGO_MANIFEST_DIR").unwrap()).join("include");
 
     if cfg!(feature = "link_lib3delight") {
         let delight = &env::var("DELIGHT").expect(
@@ -40,13 +33,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Build bindings
     let bindings = bindgen::Builder::default()
         .header("include/wrapper.h")
-        .whitelist_function("Dspy.*")
-        //.whitelist_type("PkDspy.*")
-        .whitelist_type("PtDspy.*")
-        .whitelist_type("PtDriver.*")
-        .whitelist_type("UserParameter")
-        .whitelist_var("PkDspy.*")
-        //.rustified_enum(".*")
+        .allowlist_function("Dspy.*")
+        .allowlist_type("PtDspy.*")
+        .allowlist_type("PtDriver.*")
+        .allowlist_type("UserParameter")
+        .allowlist_var("PkDspy.*")
+        .rustified_enum(".*")
+        .prepend_enum_name(false)
         // Searchpath
         .clang_arg(format!("-I{}", include_path.display()))
         // Tell cargo to invalidate the built crate whenever any of the
