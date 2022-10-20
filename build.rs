@@ -1,11 +1,49 @@
 #[cfg(any(target_os = "windows", target_os = "macos", target_os = "linux"))]
-// build.rs
-extern crate bindgen;
-
+use bindgen::callbacks::{EnumVariantValue, ParseCallbacks};
 use std::{
     env,
     path::{Path, PathBuf},
 };
+
+#[derive(Debug)]
+struct CleanNdspyNamingCallbacks {}
+
+impl ParseCallbacks for CleanNdspyNamingCallbacks {
+    fn enum_variant_name(
+        &self,
+        enum_name: Option<&str>,
+        original_variant_name: &str,
+        _variant_value: EnumVariantValue,
+    ) -> Option<String> {
+        if let Some(enum_name) = enum_name {
+            match enum_name {
+                "PtDriverVersion" => {
+                    Some(original_variant_name.trim_start_matches("k_PtDriver").trim_end_matches("Version").to_string())
+                }
+                "PtDspyCookedQueryValue" => Some(
+                    original_variant_name
+                        .trim_start_matches("PkDspyCQ")
+                        .to_string(),
+                ),
+                "PtDspyError" => Some(
+                    original_variant_name
+                        .trim_start_matches("PkDspyError")
+                        .to_string(),
+                ),
+                "PtDspyQueryType" => Some(
+                    original_variant_name
+                        .trim_start_matches("Pk")
+                        .trim_end_matches("Query")
+                        .to_string(),
+                ),
+
+                _ => None,
+            }
+        } else {
+            None
+        }
+    }
+}
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // TODO: make this generic & work on Linux/Windows
@@ -45,6 +83,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Tell cargo to invalidate the built crate whenever any of the
         // included header files changed.
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
+        .parse_callbacks(Box::new(CleanNdspyNamingCallbacks {}))
         .generate()
         .expect("Unable to generate bindings");
 
