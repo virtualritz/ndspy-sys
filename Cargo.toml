@@ -1,6 +1,6 @@
 [package]
 name = "ndspy-sys"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["Moritz Moeller <virtualritz@protonmail.com>"]
 license = "MIT OR Apache-2.0 OR Zlib"
 keywords = ["graphics", "rendering", "3d", "ray-tracing"]
@@ -12,10 +12,5 @@ build = "build.rs"
 repository = "https://github.com/virtualritz/ndspy-sys"
 documentation = "https://docs.rs/ndspy-sys/"
 
-[features]
-default = []
-# Specify this to link against lib3delight.
-link_lib3delight = []
-
 [build-dependencies]
-bindgen = "0.61.0"
+bindgen = "0.64.0"
