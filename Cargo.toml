@@ -13,4 +13,4 @@ repository = "https://github.com/virtualritz/ndspy-sys"
 documentation = "https://docs.rs/ndspy-sys/"
 
 [build-dependencies]
-bindgen = "0.64.0"
+bindgen = "0.65.1"
