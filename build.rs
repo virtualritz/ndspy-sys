@@ -1,9 +1,6 @@
 #[cfg(any(target_os = "windows", target_os = "macos", target_os = "linux"))]
 use bindgen::callbacks::{EnumVariantValue, ParseCallbacks};
-use std::{
-    env,
-    path::PathBuf,
-};
+use std::{env, path::PathBuf};
 
 #[derive(Debug)]
 struct CleanNdspyNamingCallbacks {}
@@ -17,9 +14,12 @@ impl ParseCallbacks for CleanNdspyNamingCallbacks {
     ) -> Option<String> {
         if let Some(enum_name) = enum_name {
             match enum_name {
-                "PtDriverVersion" => {
-                    Some(original_variant_name.trim_start_matches("k_PtDriver").trim_end_matches("Version").to_string())
-                }
+                "PtDriverVersion" => Some(
+                    original_variant_name
+                        .trim_start_matches("k_PtDriver")
+                        .trim_end_matches("Version")
+                        .to_string(),
+                ),
                 "PtDspyCookedQueryValue" => Some(
                     original_variant_name
                         .trim_start_matches("PkDspyCQ")
@@ -66,7 +66,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .clang_arg(format!("-I{}", include_path.display()))
         // Tell cargo to invalidate the built crate whenever any of the
         // included header files changed.
-        .parse_callbacks(Box::new(bindgen::CargoCallbacks))
+        .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
         .parse_callbacks(Box::new(CleanNdspyNamingCallbacks {}))
         .generate()
         .expect("Unable to generate bindings");

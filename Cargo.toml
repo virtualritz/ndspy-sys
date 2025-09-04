@@ -1,16 +1,16 @@
 [package]
 name = "ndspy-sys"
-version = "0.2.2"
+version = "0.2.3"
 authors = ["Moritz Moeller <virtualritz@protonmail.com>"]
 license = "MIT OR Apache-2.0 OR Zlib"
 keywords = ["graphics", "rendering", "3d", "ray-tracing"]
 categories = ["graphics", "multimedia::images", "rendering::graphics-api"]
 description = "Auto-generated Rust bindings for the RenderMan/3Delight|NSI display driver API."
 readme = "README.md"
-edition = "2021"
+edition = "2024"
 build = "build.rs"
 repository = "https://github.com/virtualritz/ndspy-sys"
 documentation = "https://docs.rs/ndspy-sys/"
 
 [build-dependencies]
-bindgen = "0.64.0"
+bindgen = "0.72"
